@@ -4,7 +4,8 @@ import TestParameters from './components/TestParameters'
 import MarkdownPreview from './components/MarkdownPreview'
 import JsonOutput from './components/JsonOutput'
 import ApiKeyInput from './components/ApiKeyInput'
-import { generateTestContent } from './services/openai'
+import { generateTestContent as generateOpenAI } from './services/openai'
+import { generateTestContent as generateGemini } from './services/gemini'
 import './App.css'
 
 const DEFAULT_PARAMS = {
@@ -14,7 +15,11 @@ const DEFAULT_PARAMS = {
 }
 
 function App() {
-  const [apiKey, setApiKey] = useState(() => localStorage.getItem('openai_api_key') || '')
+  const [provider, setProvider] = useState(() => localStorage.getItem('ai_provider') || 'openai')
+  const [apiKeys, setApiKeys] = useState(() => ({
+    openai: localStorage.getItem('openai_api_key') || '',
+    gemini: localStorage.getItem('gemini_api_key') || '',
+  }))
   const [context, setContext] = useState('')
   const [params, setParams] = useState(DEFAULT_PARAMS)
   const [loading, setLoading] = useState(false)
@@ -23,9 +28,14 @@ function App() {
   const [testJson, setTestJson] = useState(null)
   const [activeTab, setActiveTab] = useState('summary')
 
+  const handleProviderChange = (newProvider) => {
+    setProvider(newProvider)
+    localStorage.setItem('ai_provider', newProvider)
+  }
+
   const handleApiKeyChange = (key) => {
-    setApiKey(key)
-    localStorage.setItem('openai_api_key', key)
+    setApiKeys((prev) => ({ ...prev, [provider]: key }))
+    localStorage.setItem(`${provider}_api_key`, key)
   }
 
   const handleGenerate = async () => {
@@ -33,8 +43,9 @@ function App() {
       setError('Por favor, insira um contexto.')
       return
     }
-    if (!apiKey.trim()) {
-      setError('Por favor, insira sua chave de API do OpenAI.')
+    const currentKey = apiKeys[provider]
+    if (!currentKey.trim()) {
+      setError(`Por favor, insira sua chave de API do ${provider === 'openai' ? 'OpenAI' : 'Gemini'}.`)
       return
     }
     setError('')
@@ -42,7 +53,8 @@ function App() {
     setMarkdownSummary('')
     setTestJson(null)
     try {
-      const result = await generateTestContent(apiKey, context, params)
+      const generate = provider === 'gemini' ? generateGemini : generateOpenAI
+      const result = await generate(currentKey, context, params)
       setMarkdownSummary(result.summary)
       setTestJson(result.test)
       setActiveTab('summary')
@@ -62,7 +74,12 @@ function App() {
 
       <main className="app-main">
         <div className="left-panel">
-          <ApiKeyInput apiKey={apiKey} onChange={handleApiKeyChange} />
+          <ApiKeyInput
+            provider={provider}
+            apiKey={apiKeys[provider]}
+            onProviderChange={handleProviderChange}
+            onApiKeyChange={handleApiKeyChange}
+          />
           <ContextInput context={context} onChange={setContext} />
           <TestParameters params={params} onChange={setParams} />
           <button
