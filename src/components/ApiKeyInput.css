@@ -1,0 +1,29 @@
+.api-key-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+  font-family: monospace;
+}
+
+.api-key-input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.api-key-hint {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: #718096;
+}
+
+.api-key-hint a {
+  color: #667eea;
+  text-decoration: none;
+}
+
+.api-key-hint a:hover {
+  text-decoration: underline;
+}
