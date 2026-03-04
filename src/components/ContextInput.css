@@ -1,0 +1,24 @@
+.context-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.2s;
+  line-height: 1.6;
+}
+
+.context-textarea:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.context-info {
+  margin-top: 8px;
+  font-size: 0.8rem;
+  color: #a0aec0;
+  text-align: right;
+  min-height: 18px;
+}
