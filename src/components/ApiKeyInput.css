@@ -1,3 +1,37 @@
+.provider-selector {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.provider-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: border-color 0.2s, background 0.2s;
+  user-select: none;
+}
+
+.provider-option input[type='radio'] {
+  display: none;
+}
+
+.provider-option.selected {
+  border-color: #667eea;
+  background: #ebf0ff;
+  color: #4a5568;
+}
+
+.provider-option:hover:not(.selected) {
+  border-color: #b0bacc;
+}
+
 .api-key-input {
   width: 100%;
   padding: 10px 14px;
