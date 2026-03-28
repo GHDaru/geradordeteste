@@ -1,15 +1,18 @@
 import { buildPrompt } from './prompt'
 
+export const DEFAULT_GEMINI_MODEL = 'gemini-3.1-flash-lite'
+
 /**
  * Calls the Google Gemini API to generate test content from a given context.
  * @param {string} apiKey - Gemini API key
  * @param {string} context - The educational context to process
  * @param {Object} params - Test parameters (numQuestions, format, complexity)
+ * @param {string} [model] - Gemini model ID to use
  * @returns {Promise<{summary: string, test: Object}>}
  */
-export async function generateTestContent(apiKey, context, params) {
+export async function generateTestContent(apiKey, context, params, model = DEFAULT_GEMINI_MODEL) {
   const response = await fetch(
-    'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent',
+    `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`,
     {
       method: 'POST',
       headers: {

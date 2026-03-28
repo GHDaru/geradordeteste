@@ -1,13 +1,16 @@
 import { buildPrompt } from './prompt'
 
+export const DEFAULT_OPENAI_MODEL = 'gpt-4o-mini'
+
 /**
  * Calls the OpenAI API to generate test content from a given context.
  * @param {string} apiKey - OpenAI API key
  * @param {string} context - The educational context to process
  * @param {Object} params - Test parameters (numQuestions, format, complexity)
+ * @param {string} [model] - OpenAI model ID to use
  * @returns {Promise<{summary: string, test: Object}>}
  */
-export async function generateTestContent(apiKey, context, params) {
+export async function generateTestContent(apiKey, context, params, model = DEFAULT_OPENAI_MODEL) {
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -15,7 +18,7 @@ export async function generateTestContent(apiKey, context, params) {
       Authorization: `Bearer ${apiKey}`,
     },
     body: JSON.stringify({
-      model: 'gpt-4o-mini',
+      model,
       messages: [
         {
           role: 'system',
