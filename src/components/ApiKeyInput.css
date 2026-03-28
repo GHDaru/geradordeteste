@@ -61,3 +61,130 @@
 .api-key-hint a:hover {
   text-decoration: underline;
 }
+
+/* Model selector */
+.model-selector {
+  margin-bottom: 12px;
+}
+
+.model-selector-label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 6px;
+}
+
+/* Gemini model table */
+.model-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.model-table thead tr {
+  background: #f7fafc;
+}
+
+.model-table th {
+  padding: 7px 10px;
+  text-align: left;
+  font-weight: 600;
+  color: #718096;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.model-table th:first-child {
+  width: 28px;
+}
+
+.model-row {
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.model-row:hover:not(.selected) {
+  background: #f7fafc;
+}
+
+.model-row.selected {
+  background: #ebf0ff;
+}
+
+.model-row td {
+  padding: 7px 10px;
+  border-bottom: 1px solid #f0f4f8;
+  color: #4a5568;
+}
+
+.model-row:last-child td {
+  border-bottom: none;
+}
+
+.model-row input[type='radio'] {
+  accent-color: #667eea;
+  cursor: pointer;
+}
+
+.model-name {
+  font-weight: 500;
+  color: #2d3748;
+}
+
+.model-row.selected .model-name {
+  color: #4c51bf;
+}
+
+/* OpenAI model list */
+.openai-model-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.openai-model-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  user-select: none;
+}
+
+.openai-model-option input[type='radio'] {
+  accent-color: #667eea;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.openai-model-option.selected {
+  border-color: #667eea;
+  background: #ebf0ff;
+}
+
+.openai-model-option:hover:not(.selected) {
+  border-color: #b0bacc;
+}
+
+.openai-model-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #2d3748;
+  flex-shrink: 0;
+}
+
+.openai-model-desc {
+  font-size: 0.8rem;
+  color: #718096;
+}
+
+.openai-model-option.selected .openai-model-name {
+  color: #4c51bf;
+}
+

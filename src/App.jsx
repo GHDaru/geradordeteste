@@ -4,8 +4,8 @@ import TestParameters from './components/TestParameters'
 import MarkdownPreview from './components/MarkdownPreview'
 import JsonOutput from './components/JsonOutput'
 import ApiKeyInput from './components/ApiKeyInput'
-import { generateTestContent as generateOpenAI } from './services/openai'
-import { generateTestContent as generateGemini } from './services/gemini'
+import { generateTestContent as generateOpenAI, DEFAULT_OPENAI_MODEL } from './services/openai'
+import { generateTestContent as generateGemini, DEFAULT_GEMINI_MODEL } from './services/gemini'
 import './App.css'
 
 const DEFAULT_PARAMS = {
@@ -19,6 +19,10 @@ function App() {
   const [apiKeys, setApiKeys] = useState(() => ({
     openai: localStorage.getItem('openai_api_key') || '',
     gemini: localStorage.getItem('gemini_api_key') || '',
+  }))
+  const [models, setModels] = useState(() => ({
+    openai: localStorage.getItem('openai_model') || DEFAULT_OPENAI_MODEL,
+    gemini: localStorage.getItem('gemini_model') || DEFAULT_GEMINI_MODEL,
   }))
   const [context, setContext] = useState('')
   const [params, setParams] = useState(DEFAULT_PARAMS)
@@ -38,6 +42,11 @@ function App() {
     localStorage.setItem(`${provider}_api_key`, key)
   }
 
+  const handleModelChange = (newModel) => {
+    setModels((prev) => ({ ...prev, [provider]: newModel }))
+    localStorage.setItem(`${provider}_model`, newModel)
+  }
+
   const handleGenerate = async () => {
     if (!context.trim()) {
       setError('Por favor, insira um contexto.')
@@ -54,7 +63,7 @@ function App() {
     setTestJson(null)
     try {
       const generate = provider === 'gemini' ? generateGemini : generateOpenAI
-      const result = await generate(currentKey, context, params)
+      const result = await generate(currentKey, context, params, models[provider])
       setMarkdownSummary(result.summary)
       setTestJson(result.test)
       setActiveTab('summary')
@@ -77,8 +86,10 @@ function App() {
           <ApiKeyInput
             provider={provider}
             apiKey={apiKeys[provider]}
+            model={models[provider]}
             onProviderChange={handleProviderChange}
             onApiKeyChange={handleApiKeyChange}
+            onModelChange={handleModelChange}
           />
           <ContextInput context={context} onChange={setContext} />
           <TestParameters params={params} onChange={setParams} />
